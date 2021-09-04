@@ -16,8 +16,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package domainapp.modules.simple.dom.impl;
-
+package domainapp.modules.simple.huesped;
 import java.util.List;
 
 import org.datanucleus.query.typesafe.TypesafeQuery;
@@ -36,34 +35,37 @@ import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
+//import domainapp.modules.simple.huesped.Huesped;
+
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
-        objectType = "simple.SimpleObjectMenu",
-        repositoryFor = SimpleObject.class
+        objectType = "simple.HuespedMenu",
+        repositoryFor = Huesped.class
 )
 @DomainServiceLayout(
         named = "Simple Objects",
         menuOrder = "10"
 )
-public class SimpleObjects {
+public class RepoHuesped {
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "1")
-    public List<SimpleObject> listAll() {
-        return repositoryService.allInstances(SimpleObject.class);
-    }
 
+    public List<Huesped> listAll
+            () {
+      return repositoryService.allInstances(Huesped.class);
+   }
 
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "2")
-    public List<SimpleObject> findByName(
+    public List<Huesped> findByName(
             @ParameterLayout(named="Name")
             final String name
     ) {
-        TypesafeQuery<SimpleObject> q = isisJdoSupport.newTypesafeQuery(SimpleObject.class);
-        final QSimpleObject cand = QSimpleObject.candidate();
+        TypesafeQuery<Huesped> q = isisJdoSupport.newTypesafeQuery(Huesped.class);
+        final QHuesped cand = QHuesped.candidate();
         q = q.filter(
                 cand.name.indexOf(q.stringParameter("name")).ne(-1)
         );
@@ -72,9 +74,9 @@ public class SimpleObjects {
     }
 
     @Programmatic
-    public SimpleObject findByNameExact(final String name) {
-        TypesafeQuery<SimpleObject> q = isisJdoSupport.newTypesafeQuery(SimpleObject.class);
-        final QSimpleObject cand = QSimpleObject.candidate();
+    public Huesped findByNameExact(final String name) {
+        TypesafeQuery<Huesped> q = isisJdoSupport.newTypesafeQuery(Huesped.class);
+        final QHuesped cand = QHuesped.candidate();
         q = q.filter(
                 cand.name.eq(q.stringParameter("name"))
         );
@@ -84,20 +86,21 @@ public class SimpleObjects {
 
     @Programmatic
     public void ping() {
-        TypesafeQuery<SimpleObject> q = isisJdoSupport.newTypesafeQuery(SimpleObject.class);
-        final QSimpleObject candidate = QSimpleObject.candidate();
+        TypesafeQuery<Huesped> q = isisJdoSupport.newTypesafeQuery(Huesped.class);
+        final QHuesped candidate = QHuesped.candidate();
         q.range(0,2);
         q.orderBy(candidate.name.asc());
         q.executeList();
     }
 
-    public static class CreateDomainEvent extends ActionDomainEvent<SimpleObjects> {}
+    public static class CreateDomainEvent extends ActionDomainEvent<RepoHuesped> {}
     @Action(domainEvent = CreateDomainEvent.class)
     @MemberOrder(sequence = "3")
-    public SimpleObject create(
+    public Huesped create(
             @ParameterLayout(named="Name")
-            final String name) {
-        return repositoryService.persist(new SimpleObject(name));
+            final String name
+        ) {
+        return repositoryService.persist(new Huesped(name));
     }
 
     @javax.inject.Inject
