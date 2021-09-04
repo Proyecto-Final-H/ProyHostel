@@ -5,11 +5,15 @@ bin/
 target/
 target-ide/
 logs/
+_checks/
 .settings/
 .project
 .classpath
 .idea
+.m2/
 *.iml
+
+build/
 
 JArchitectOut/
 *.jdproj
@@ -19,12 +23,13 @@ neo4j_DB/
 # log files
 datanucleus.log
 isis.log
+i18n-po.log
 hs_err_pid*.log
 
 # Package Files #
-*.jar
 *.war
 *.ear
+*.jar
 
 dependency-reduced-pom.xml
 pom.xml.tag
@@ -36,5 +41,7 @@ pom.xml.versionsBackup
 *.jdproj
 JArchitectOut/
 
-
 rebel.xml
+translations.pot
+
+.flattened-pom.xml
