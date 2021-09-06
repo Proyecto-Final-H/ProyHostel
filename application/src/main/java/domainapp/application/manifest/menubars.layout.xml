@@ -33,7 +33,6 @@
                 </mb3:serviceAction>
             </mb3:section>
         </mb3:menu>
-    /mb3:menu>
     <mb3:menu>
         <mb3:named>Tipo de Habitacion</mb3:named>
         <mb3:section>
@@ -44,6 +43,19 @@
                 <cpt:named>Buscar por Nombre</cpt:named>
             </mb3:serviceAction>
             <mb3:serviceAction objectType="simple.TipohabitacionMenu" id="listAll">
+                <cpt:named>Listar todos</cpt:named>
+            </mb3:serviceAction>
+        </mb3:section>
+    <mb3:menu>
+        <mb3:named>Gastos</mb3:named>
+        <mb3:section>
+            <mb3:serviceAction objectType="simple.GastosMenu" id="create">
+                <cpt:named>Crear</cpt:named>
+            </mb3:serviceAction>
+            <mb3:serviceAction objectType="simple.GastosMenu" id="findByName">
+                <cpt:named>Buscar por Nombre</cpt:named>
+            </mb3:serviceAction>
+            <mb3:serviceAction objectType="simple.GastosMenu" id="listAll">
                 <cpt:named>Listar todos</cpt:named>
             </mb3:serviceAction>
         </mb3:section>
