@@ -46,6 +46,22 @@
                 <cpt:named>Listar todos</cpt:named>
             </mb3:serviceAction>
         </mb3:section>
+    </mb3:menu>
+    <mb3:menu>
+        <mb3:named>Habitacion</mb3:named>
+        <mb3:section>
+            <mb3:serviceAction objectType="simple.HabitacionMenu" id="create">
+                <cpt:named>Crear</cpt:named>
+            </mb3:serviceAction>
+            <mb3:serviceAction objectType="simple.HabitacionMenu" id="findByName">
+                <cpt:named>Buscar por Nombre</cpt:named>
+            </mb3:serviceAction>
+            <mb3:serviceAction objectType="simple.HabitacionMenu" id="listAll">
+                <cpt:named>Listar todos</cpt:named>
+            </mb3:serviceAction>
+        </mb3:section>
+    </mb3:menu>
+    <mb3:menu>
     <mb3:named>Caja</mb3:named>
     <mb3:section>
         <mb3:serviceAction objectType="simple.CajaMenu" id="create">
