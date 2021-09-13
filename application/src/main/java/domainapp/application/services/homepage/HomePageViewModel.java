@@ -24,8 +24,10 @@ import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.Nature;
 import org.apache.isis.applib.services.i18n.TranslatableString;
 
-import domainapp.modules.simple.dom.impl.SimpleObject;
-import domainapp.modules.simple.dom.impl.SimpleObjects;
+import domainapp.modules.simple.reserva.RepoReserva;
+import domainapp.modules.simple.reserva.Reserva;
+
+//import domainapp.modules.simple.reserva.SimpleObject;
 
 @DomainObject(
         nature = Nature.VIEW_MODEL,
@@ -34,13 +36,16 @@ import domainapp.modules.simple.dom.impl.SimpleObjects;
 public class HomePageViewModel {
 
     public TranslatableString title() {
-        return TranslatableString.tr("{num} objects", "num", getObjects().size());
+        return TranslatableString.tr("{num} Reservas", "num", getObjects().size());
     }
 
-    public List<SimpleObject> getObjects() {
-        return simpleObjects.listAll();
+    @org.apache.isis.applib.annotation.HomePage
+    public List<Reserva> getObjects() {
+        return repoReserva.listAll();
     }
+
+
 
     @javax.inject.Inject
-    SimpleObjects simpleObjects;
+    RepoReserva repoReserva;
 }
