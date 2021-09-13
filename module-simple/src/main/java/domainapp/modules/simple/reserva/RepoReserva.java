@@ -35,7 +35,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
-
+// Repositorio de Reserva
 //import domainapp.modules.simple.reserva.Reserva;
 
 
