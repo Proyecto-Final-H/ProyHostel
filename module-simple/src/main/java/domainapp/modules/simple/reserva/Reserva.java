@@ -56,7 +56,7 @@ import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_Y
 @lombok.Getter @lombok.Setter
 @lombok.RequiredArgsConstructor
 public class Reserva implements Comparable<Reserva> {
-
+//clase principal de Reserva
     @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
     @lombok.NonNull
     @Property() // editing disabled by default, see isis.properties
