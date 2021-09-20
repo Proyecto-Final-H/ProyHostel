@@ -42,6 +42,8 @@ import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.services.title.TitleService;
 import org.apache.isis.schema.utils.jaxbadapters.JodaDateTimeStringAdapter;
 
+import org.isisaddons.wicket.fullcalendar2.cpt.applib.CalendarEvent;
+import org.isisaddons.wicket.fullcalendar2.cpt.applib.CalendarEventable;
 import lombok.AccessLevel;
 import static org.apache.isis.applib.annotation.CommandReification.ENABLED;
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
@@ -56,6 +58,7 @@ import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_Y
 @lombok.Getter @lombok.Setter
 @lombok.RequiredArgsConstructor
 public class Reserva implements Comparable<Reserva> {
+public class Reserva implements Comparable<Reserva>, CalendarEventable{
 //clase principal de Reserva
     @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
     @lombok.NonNull
@@ -122,7 +125,13 @@ public class Reserva implements Comparable<Reserva> {
                 .result();
     }
 
+        @Override public String getCalendarName() {
+            return null;
+        }
 
+        @Override public CalendarEvent toCalendarEvent() {
+            return null;
+        }
     @javax.inject.Inject
     @javax.jdo.annotations.NotPersistent
     @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
