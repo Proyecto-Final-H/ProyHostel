@@ -46,3 +46,5 @@ translations.pot
 
 .flattened-pom.xml
 *.pot
+module-simple/.flattened-pom.xml
+webapp/.flattened-pom.xml
