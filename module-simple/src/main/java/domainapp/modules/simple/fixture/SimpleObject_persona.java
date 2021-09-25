@@ -24,13 +24,13 @@ import org.apache.isis.applib.fixturescripts.PersonaWithFinder;
 import org.apache.isis.applib.fixturescripts.setup.PersonaEnumPersistAll;
 import org.apache.isis.applib.services.registry.ServiceRegistry2;
 
-import domainapp.modules.simple.dom.impl.SimpleObject;
-import domainapp.modules.simple.dom.impl.SimpleObjects;
+import domainapp.modules.simple.huesped.Huesped;
+import domainapp.modules.simple.huesped.RepoHuesped;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum SimpleObject_persona implements PersonaWithBuilderScript<SimpleObject, SimpleObjectBuilder>,
-        PersonaWithFinder<SimpleObject> {
+public enum SimpleObject_persona implements PersonaWithBuilderScript<Huesped, SimpleObjectBuilder>,
+        PersonaWithFinder<Huesped> {
 
     FOO("Foo"),
     BAR("Bar"),
@@ -51,13 +51,13 @@ public enum SimpleObject_persona implements PersonaWithBuilderScript<SimpleObjec
     }
 
     //@Override
-    public SimpleObject findUsing(final ServiceRegistry2 serviceRegistry) {
-        SimpleObjects simpleObjects = serviceRegistry.lookupService(SimpleObjects.class);
-        return simpleObjects.findByNameExact(name);
+    public Huesped findUsing(final ServiceRegistry2 serviceRegistry) {
+        RepoHuesped repoHuesped = serviceRegistry.lookupService(RepoHuesped.class);
+        return repoHuesped.findByNameExact(name);
     }
 
     public static class PersistAll
-            extends PersonaEnumPersistAll<SimpleObject_persona, SimpleObject, SimpleObjectBuilder> {
+            extends PersonaEnumPersistAll<SimpleObject_persona, Huesped, SimpleObjectBuilder> {
         public PersistAll() {
             super(SimpleObject_persona.class);
         }
