@@ -37,7 +37,7 @@ import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.services.title.TitleService;
-
+import domainapp.modules.simple.huesped.Pais;
 import lombok.AccessLevel;
 import static org.apache.isis.applib.annotation.CommandReification.ENABLED;
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
@@ -63,15 +63,60 @@ public class Huesped implements Comparable<Huesped> {
     @Property(editing = Editing.ENABLED)
     private String notes;
 
-   
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    @Title( prepend= " Apellido: ")
+    private String apellido;
+
+//    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+//    @lombok.NonNull
+//    @Property()
+//    private Pais pais;
+
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    @Title( prepend= " DNI: ")
+    private String dni;
+
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    @Title( prepend= " NumTelefono: ")
+    private String numTelefono;
+
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    @Title( prepend= " Email: ")
+    private String email;
+
+//    public Huesped(final String name, final String apellido, final String dni, final Pais pais, final String numTelefono, final String email) {
+//
+//    }
+
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Huesped updateName(
             @Parameter(maxLength = 40)
             @ParameterLayout(named = "Nombre")
-            final String name
+            final String name,
+            @ParameterLayout(named = "Apellido")
+            final String apellido,
+//            @ParameterLayout(named = "Pais")
+//            final Pais pais,
+            @ParameterLayout(named = "DNI")
+             final String dni,
+            @ParameterLayout(named = "Numero de Telefono")
+            final String numTelefono,
+            @ParameterLayout(named = "Email")
+            final String email
                             ) {
         setName(name);
-        
+        setApellido(apellido);
+        setDni(dni);
+        setNumTelefono(numTelefono);
+        setEmail(email);
         return this;
     }
 
