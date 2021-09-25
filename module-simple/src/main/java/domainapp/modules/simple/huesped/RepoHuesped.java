@@ -35,7 +35,7 @@ import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
 
-//import domainapp.modules.simple.huesped.Huesped;
+import domainapp.modules.simple.huesped.Pais;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
@@ -98,9 +98,18 @@ public class RepoHuesped {
     @MemberOrder(sequence = "3")
     public Huesped create(
             @ParameterLayout(named="Name")
-            final String name
+            final String name,
+            @ParameterLayout(named = "Apellido")
+            final String apellido,
+            @ParameterLayout(named ="DNI" )
+            final String dni,
+ //           final Pais pais,
+            @ParameterLayout(named = "NumTelefono")
+            final String numTelefono,
+            @ParameterLayout (named = "Email")
+            final  String email
         ) {
-        return repositoryService.persist(new Huesped(name));
+        return repositoryService.persist(new Huesped(name,apellido,dni,numTelefono,email));
     }
 
     @javax.inject.Inject
