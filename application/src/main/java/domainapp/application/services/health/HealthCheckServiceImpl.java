@@ -7,7 +7,7 @@ import org.apache.isis.applib.annotation.NatureOfService;
 import org.apache.isis.applib.services.health.Health;
 import org.apache.isis.applib.services.health.HealthCheckService;
 
-import domainapp.modules.simple.dom.impl.SimpleObjects;
+import domainapp.modules.simple.huesped.RepoHuesped;
 
 @DomainService(nature = NatureOfService.DOMAIN)
 public class HealthCheckServiceImpl implements HealthCheckService {
@@ -25,5 +25,5 @@ public class HealthCheckServiceImpl implements HealthCheckService {
     }
 
     @Inject
-    SimpleObjects simpleObjects;
+    RepoHuesped simpleObjects;
 }
