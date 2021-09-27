@@ -98,7 +98,7 @@ public class RepoHabitacion {
     public Habitacion create(
             @ParameterLayout(named="Name")
             final String name,
-            final Tipohabitacion tipohabitacion,
+ //           final Tipohabitacion tipohabitacion,
  //          final Tipohabitacion tipohabitacion,
             @ParameterLayout(named = "Precio")
             final Integer precio
