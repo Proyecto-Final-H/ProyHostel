@@ -98,11 +98,12 @@ public class RepoHabitacion {
     public Habitacion create(
             @ParameterLayout(named="Name")
             final String name,
-            final Tiposhabitacion tipohabitacion,
+            final Tipohabitacion tipohabitacion,
+ //          final Tipohabitacion tipohabitacion,
             @ParameterLayout(named = "Precio")
             final Integer precio
             ) {
-        return repositoryService.persist(new Habitacion(name,tipohabitacion,precio));
+        return repositoryService.persist(new Habitacion(name,precio));
     }
 
     @javax.inject.Inject
