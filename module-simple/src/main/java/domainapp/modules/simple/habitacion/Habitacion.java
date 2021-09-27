@@ -62,12 +62,12 @@ public class Habitacion implements Comparable<Habitacion> {
     @javax.jdo.annotations.Column(allowsNull = "true", length = 4000)
     @Property(editing = Editing.ENABLED)
     private String notes;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
-    @lombok.NonNull
-    @Property()
-    private Tiposhabitacion tipohabitacion;
-    
+
+//    @lombok.NonNull
+//    @Property()
+//    @Column(allowsNull = "false")
+//   private Tipohabitacion tipohabitacion;
+
     @javax.jdo.annotations.Column(allowsNull = "true")
     @lombok.NonNull
     @Property()
@@ -78,19 +78,22 @@ public class Habitacion implements Comparable<Habitacion> {
 //    @Property()
 //    @Title(prepend = "Email: ")
 //    private String Email;
-    
+//public String RepoTipohabitacion() { return String.valueOf(this.tipohabitacion); }
+
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Habitacion updateName(
             @Parameter(maxLength = 40)
             @ParameterLayout(named = "Nombre de Habitacion")
             final String name,      
-            @ParameterLayout(named = "Tipohabitacion")
-            final String tipohabitacion,
+//            @ParameterLayout(named = "Tipohabitacion")
+//            final String
+//            Tipohabitacion.tipohabitacion,
             @ParameterLayout(named = "Precio") 
             final Integer precio     
             ) 
     {
         setName(name);
+  //      setTipohabitacion();
         setPrecio(precio);
         return this;
     }
