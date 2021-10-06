@@ -64,6 +64,11 @@ public class Reserva implements Comparable<Reserva>, CalendarEventable{
     @Property() // editing disabled by default, see isis.properties
     @Title(prepend = "Reserva: ")
     private String name;
+    //Estados
+    @javax.jdo.annotations.Column(allowsNull = "true", name = "estado")
+    @Property()
+    private EstadoReserva estado;
+    //fin parte Estados
 
     @javax.jdo.annotations.Column(allowsNull = "true")
     @lombok.NonNull
@@ -79,6 +84,15 @@ public class Reserva implements Comparable<Reserva>, CalendarEventable{
 
 
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
+    //Estados
+    public String iconName(){
+        if (this.estado == EstadoReserva.Reservada){
+            return "Reservada";
+        }else{
+            return "Ocupada";
+        }
+    }
+    //fin parte Estados
     public LocalDate RepoFechaAlta() { return this.fechaAlta; }
     public Reserva updateName(
             @Parameter(maxLength = 40)
@@ -95,6 +109,27 @@ public class Reserva implements Comparable<Reserva>, CalendarEventable{
         
         return this;
     }
+    //Estados
+    @Programmatic
+    public void CambiarEstado (EstadoReserva estado){
+        this.estado = estado;
+    }
+    
+    @Action()
+    @ActionLayout(named = "Reservar")
+    public Reserva Reservada(){
+        CambiarEstado(EstadoReserva.Reservada);
+        return this;
+    }
+    @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(named = "Ingreso Habitacion ocupada")
+    public Reserva Ocupada(){
+        CambiarEstado(EstadoReserva.Ocupada);
+        return this;
+    }
+    public boolean hideReservada(){return  this.estado == EstadoReserva.Reservada;}
+    public boolean hideOcupada(){return  this.estado == EstadoReserva.Ocupada;}
+    //fin Estados
 
     public String default0UpdateName() {
         return getName();
