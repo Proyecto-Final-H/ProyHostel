@@ -18,6 +18,8 @@
  */
 package domainapp.modules.simple.caja;
 
+import domainapp.modules.simple.caja.Condicioniva;
+import domainapp.modules.simple.caja.Condicionvent;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
 
@@ -59,6 +61,17 @@ public class Caja implements Comparable<Caja> {
     @Title(prepend = "Caja: ")
     private String name;
     
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    @Title(prepend = "Condicion Venta= ")
+    private Condicionvent condicionvent;
+
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    @Title(prepend = "Condicion IVA= ")
+    private Condicioniva condicioniva;
     
     @javax.jdo.annotations.Column(allowsNull = "true", length = 4000)
     @Property(editing = Editing.ENABLED)
@@ -90,6 +103,12 @@ public class Caja implements Comparable<Caja> {
    //         @ParameterLayout(named = "Monto")
 //            final Integer monto,
             @ParameterLayout(named = "Numerofactura") 
+            @Parameter(maxLength = 40)
+            @ParameterLayout(named = "condicionvent")
+            final String condicionvent,
+            @Parameter(maxLength = 40)
+            @ParameterLayout(named = "condicioniva")
+            final String condicioniva,
             final Integer numerofactura
   //         @Parameter(maxLength = 40)
 	//	    @ParameterLayout(named = "Tipodepago")
