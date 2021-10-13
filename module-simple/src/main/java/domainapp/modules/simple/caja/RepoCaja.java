@@ -17,7 +17,8 @@
  *  under the License.
  */
 package domainapp.modules.simple.caja;
-
+import domainapp.modules.simple.caja.Condicioniva;
+import domainapp.modules.simple.caja.Condicionvent;
 import java.util.List;
 
 import org.datanucleus.query.typesafe.TypesafeQuery;
@@ -97,6 +98,8 @@ public class RepoCaja {
     public Caja create(
             @ParameterLayout(named="Name")
             final String name,
+            final Condicionvent condicionvent,
+            final Condicioniva condicioniva,
 //            @ParameterLayout(named = "Monto") 
 //            final Integer monto,
      //       final Tipodepago tipodepago,
@@ -106,7 +109,7 @@ public class RepoCaja {
             
             ) {
 //    return repositoryService.persist(new Gasto(name,monto,numerofactura));
- 	return repositoryService.persist(new Caja(name,numerofactura));
+        return repositoryService.persist(new Caja(name,condicionvent,condicioniva,numerofactura));//numerofactura));
    //     return repositoryService.persist(new Caja(name,numerofactura,tipodepago));
 
         //return repositoryService.persist(new Caja(name));
