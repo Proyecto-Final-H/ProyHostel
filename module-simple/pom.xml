@@ -140,6 +140,13 @@
             <artifactId>isis-wicket-fullcalendar2-cpt</artifactId>
             <version>1.17.0</version>
         </dependency>
+
+          <dependency>
+               <groupId>net.sf.jasperreports</groupId>
+               <artifactId>jasperreports</artifactId>
+               <version>6.3.1</version>
+           </dependency>
+
     </dependencies>
 
     <profiles>
