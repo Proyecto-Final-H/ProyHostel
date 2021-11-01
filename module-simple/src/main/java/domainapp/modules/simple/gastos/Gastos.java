@@ -82,6 +82,9 @@ public class Gastos implements Comparable<Gastos> {
   //  @Title(prepend = "Tipodegasto: ")
     private Tipodegasto tipodegasto;
     
+    //Reporte
+    public String RepoName() { return this.name; }
+    //fin reporte
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Gastos updateName(
             @Parameter(maxLength = 40)
