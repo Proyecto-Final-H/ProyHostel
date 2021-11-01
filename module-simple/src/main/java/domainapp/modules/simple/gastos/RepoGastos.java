@@ -36,6 +36,9 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
+import org.apache.isis.applib.value.Blob;
+import domainapp.modules.simple.reportes.EjecutarReportes;
+import net.sf.jasperreports.engine.JRException;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
@@ -90,6 +93,13 @@ public class RepoGastos {
         q.range(0,2);
         q.orderBy(candidate.name.asc());
         q.executeList();
+    }
+
+   @Action()
+    @ActionLayout(named = "Exportar Listado de Gastos")
+    public Blob exportarListado() throws JRException, IOException {
+        EjecutarReportes ejecutarReportes = new EjecutarReportes();
+        return ejecutarReportes.ListadoGastosPDF(repositoryService.allInstances(Gastos.class));//.ListadoEquiposPDF(repositoryService.allInstances(Equipo.class));
     }
 
     public static class CreateDomainEvent extends ActionDomainEvent<RepoGastos> {}
