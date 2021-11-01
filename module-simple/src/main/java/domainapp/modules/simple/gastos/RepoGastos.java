@@ -19,6 +19,7 @@
 package domainapp.modules.simple.gastos;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.datanucleus.query.typesafe.TypesafeQuery;
