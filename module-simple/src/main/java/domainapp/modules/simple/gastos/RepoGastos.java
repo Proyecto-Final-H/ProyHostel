@@ -95,14 +95,14 @@ public class RepoGastos {
         q.orderBy(candidate.name.asc());
         q.executeList();
     }
-
+    //Reporte
    @Action()
     @ActionLayout(named = "Exportar Listado de Gastos")
     public Blob exportarListado() throws JRException, IOException {
         EjecutarReportes ejecutarReportes = new EjecutarReportes();
         return ejecutarReportes.ListadoGastosPDF(repositoryService.allInstances(Gastos.class));//.ListadoEquiposPDF(repositoryService.allInstances(Equipo.class));
     }
-
+    //Fin Reporte
     public static class CreateDomainEvent extends ActionDomainEvent<RepoGastos> {}
     @Action(domainEvent = CreateDomainEvent.class)
     @MemberOrder(sequence = "4")
