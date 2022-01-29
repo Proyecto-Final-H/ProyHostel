@@ -27,32 +27,28 @@
     <bs3:row>
         <bs3:col span="6">
             <bs3:tabGroup>
-                <bs3:tab name="Habitacion Cargado Como:">
+                <bs3:tab name="Habitaciones">
                     <bs3:row>
                         <bs3:col span="12">
-                            <c:fieldSet name="Datos del Habitacion">
-                                <c:action id="Borrar">
-                        			 <c:describedAs>Elimina este objeto del almacén de datos persistente</c:describedAs>
-                                </c:action>
-                                <c:property id="name" namedEscaped="false">
-                                    <c:action id="updateName" promptStyle="INLINE"/>
-                                </c:property>
-                                <c:property id="notes" namedEscaped="true" multiLine="5" hidden="ALL_TABLES"/>
+                            <c:fieldSet name="Datos de Habitacion">
+                                <c:property id="habitacion" namedEscaped="true"/>
+                                <c:property id="tipodehabitacion" namedEscaped="true"/>
+                               <c:property id="preciohab" namedEscaped="true"/>
                             </c:fieldSet>
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
-                <bs3:tab name="Datos Extra de la Habitacion">
+                <bs3:tab name="Metadata">
                     <bs3:row>
                         <bs3:col span="12">
                             <c:fieldSet name="Metadata"/>
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
-                <bs3:tab name="Datos de Habitacion">
+                <bs3:tab name="Other">
                     <bs3:row>
                         <bs3:col span="12">
-                            <c:fieldSet name="Detalles de Habitacion" unreferencedProperties="true"/>
+                            <c:fieldSet name="Other" unreferencedProperties="true"/>
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
