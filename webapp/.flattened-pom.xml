@@ -939,6 +939,12 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.isisaddons.wicket.fullcalendar2</groupId>
+      <artifactId>isis-wicket-fullcalendar2-cpt</artifactId>
+      <version>1.17.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>2.3.4</version>
