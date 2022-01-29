@@ -94,10 +94,14 @@ public class Habitacion implements Comparable<Habitacion> {
 
     public Habitacion(
             final String nombre,
+            final Tipodehabitacion tipodehabitacion,
+            final Integer preciohab
+            ){
+
+        this.nombre = nombre;
         this.tipodehabitacion = tipodehabitacion;
         this.preciohab = preciohab;
 
-        final String title = titleService.titleOf(this);
     }
 
     @Action()
