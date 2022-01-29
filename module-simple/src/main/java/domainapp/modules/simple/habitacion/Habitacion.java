@@ -17,129 +17,138 @@
  *  under the License.
  */
 package domainapp.modules.simple.habitacion;
-
- import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.VersionStrategy;
-
-import com.google.common.collect.ComparisonChain;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.Auditing;
-import org.apache.isis.applib.annotation.DomainObject;
-import org.apache.isis.applib.annotation.DomainObjectLayout;
-import org.apache.isis.applib.annotation.Editing;
-import org.apache.isis.applib.annotation.Parameter;
-import org.apache.isis.applib.annotation.ParameterLayout;
-import org.apache.isis.applib.annotation.Property;
-import org.apache.isis.applib.annotation.Publishing;
-import org.apache.isis.applib.annotation.Title;
-import org.apache.isis.applib.services.i18n.TranslatableString;
-import org.apache.isis.applib.services.message.MessageService;
-import org.apache.isis.applib.services.repository.RepositoryService;
-import org.apache.isis.applib.services.title.TitleService;
-
+import domainapp.modules.simple.tipodehabitacion.Tipodehabitacion;
+import domainapp.modules.simple.tipodehabitacion.TipodehabitacionRepositorio;
 import lombok.AccessLevel;
-import static org.apache.isis.applib.annotation.CommandReification.ENABLED;
-import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
-import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.isis.applib.annotation.*;
 
-@javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE, schema = "simple")
-@javax.jdo.annotations.DatastoreIdentity(strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY, column="id")
-@javax.jdo.annotations.Version(strategy= VersionStrategy.DATE_TIME, column="version")
-@javax.jdo.annotations.Unique(name="Habitacion_name_UNQ", members = {"name"})
-@DomainObject(auditing = Auditing.ENABLED)
-@DomainObjectLayout()  // causes UI events to be triggered
-@lombok.Getter @lombok.Setter
-@lombok.RequiredArgsConstructor
+import javax.jdo.annotations.*;
+import java.util.List;
+
+@PersistenceCapable(
+        identityType=IdentityType.DATASTORE,
+        schema = "simple",
+        table = "Habitacion"
+)
+
+@DatastoreIdentity(
+        strategy= IdGeneratorStrategy.IDENTITY,
+        column = "id")
+
+@Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+
+@Queries({
+         @Query(
+                 name = "find", language = "JDOQL",
+                 value = "SELECT "
+                         + "FROM domainapp.modules.simple.habitacion.Habitacion  "
+                         + "ORDER BY nombre ASC"),
+        @Query(
+                name = "findByNombre", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM domainapp.modules.simple.habitacion.Habitacion "
+                        + "WHERE nombre == :nombre "),
+         @Query(
+                name = "findByTipodehabitacion", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM domainapp.modules.simple.habitacion.Habitacion "
+                        + "WHERE tipodehabitacion == :tipodehabitacion "
+                        + "ORDER BY nombre ASC"),
+
+})
+
+@Unique(name = "Habitacion_nombre_UNQ", members = { "nombre" })
+@DomainObject(
+        editing = Editing.DISABLED
+)
+@DomainObjectLayout(
+        bookmarking = BookmarkPolicy.AS_ROOT
+)
+@Getter @Setter
 public class Habitacion implements Comparable<Habitacion> {
 
-    @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
-    @lombok.NonNull
-    @Property()// editing disabled by default, see isis.properties
-    @Title(prepend = "Nombre de Habitacion: ")
-    private String name;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true", length = 4000)
-    @Property(editing = Editing.ENABLED)
-    private String notes;
-
-//    @lombok.NonNull
-//    @Property()
-//    @Column(allowsNull = "false")
-//   private Tipohabitacion tipohabitacion;
-
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @lombok.NonNull
+    @Column(allowsNull = "false", length = 40)
     @Property()
-    private Integer precio;
-//    
-//    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
-//    @lombok.NonNull
-//    @Property()
-//    @Title(prepend = "Email: ")
-//    private String Email;
-//public String RepoTipohabitacion() { return String.valueOf(this.tipohabitacion); }
+    private String nombre;
 
-    @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
-    public Habitacion updateName(
+    @Column(allowsNull = "false")
+    @Property()
+    private Tipodehabitacion tipodehabitacion;
+
+    @Column(allowsNull ="false")
+    @Property()
+    private Integer preciohab;
+
+    public String title(){
+        return getNombre();
+    }
+
+    // public String RepoNombre(){ return this.nombre; }
+    public String RepoTipodehabitacion(){ return this.tipodehabitacion.toString(); }
+
+    public Habitacion(){}
+
+    public Habitacion(
+            final String nombre,
+        this.tipodehabitacion = tipodehabitacion;
+        this.preciohab = preciohab;
+
+        final String title = titleService.titleOf(this);
+    }
+
+    @Action()
+    @ActionLayout(named = "Editar")
+    public Habitacion update(
+
             @Parameter(maxLength = 40)
-            @ParameterLayout(named = "Nombre de Habitacion")
-            final String name,      
-//            @ParameterLayout(named = "Tipohabitacion")
-//            final String
-//            Tipohabitacion.tipohabitacion,
-            @ParameterLayout(named = "Precio") 
-            final Integer precio     
-            ) 
-    {
-        setName(name);
-  //      setTipohabitacion();
-        setPrecio(precio);
+            @ParameterLayout(named = "Nombre: ")
+            final String nombre,
+
+            @Parameter(optionality = Optionality.MANDATORY)
+            @ParameterLayout(named = "Tipo de habitacion: ")
+            final Tipodehabitacion tipodehabitacion,
+
+             @Parameter(optionality = Optionality.MANDATORY)
+             @ParameterLayout(named = "Precio por  Habitacion: ")
+             final Integer preciohab)
+
+            {
+
+        this.nombre = nombre;
+        this.tipodehabitacion = tipodehabitacion;
+        this.preciohab = preciohab;
         return this;
     }
 
-    public String default0UpdateName() {
-        return getName();
+     public String default0Update() {return getNombre();}
+
+     public Tipodehabitacion default1Update() {return getTipodehabitacion();}
+    // public List<Tipodehabitacion> choices1Update() { return tipodehabitacionRepository.Listar();}
+
+    //region > compareTo, toString
+    @Override
+    public int compareTo(final Habitacion other) {
+        return org.apache.isis.applib.util.ObjectContracts.compare(this, other, "nombre");
     }
-
-    public TranslatableString validate0UpdateName(final String name) {
-        return name != null && name.contains("!") ? TranslatableString.tr("Exclamation mark is not allowed") : null;
-    }
-
-
-    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
-    public void delete() {
-        final String title = titleService.titleOf(this);
-        messageService.informUser(String.format("'%s' deleted", title));
-        repositoryService.remove(this);
-    }
-
 
     @Override
     public String toString() {
-        return getName();
+        return org.apache.isis.applib.util.ObjectContracts.toString(this, "nombre");
     }
-
-    public int compareTo(final Habitacion other) {
-        return ComparisonChain.start()
-                .compare(this.getName(), other.getName())
-                .result();
-    }
-
+    //endregion
 
     @javax.inject.Inject
-    @javax.jdo.annotations.NotPersistent
-    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
-    RepositoryService repositoryService;
+    @NotPersistent
+    @Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+    TipodehabitacionRepositorio tipodehabitacionRepository;
 
     @javax.inject.Inject
-    @javax.jdo.annotations.NotPersistent
-    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
-    TitleService titleService;
-
-    @javax.inject.Inject
-    @javax.jdo.annotations.NotPersistent
-    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
-    MessageService messageService;
+    @NotPersistent
+    @Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
+    domainapp.modules.simple.habitacion.HabitacionRepositorio habitacionRepository;
 
 }
