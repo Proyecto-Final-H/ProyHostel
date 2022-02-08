@@ -81,6 +81,7 @@ public class Habitacion implements Comparable<Habitacion> {
 
     @Column(allowsNull ="false")
     @Property()
+    @Title( prepend= "precio de habitacion")
     private Integer preciohab;
 
     public String title(){
