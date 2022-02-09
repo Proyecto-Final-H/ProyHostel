@@ -24,7 +24,7 @@ public class ReservaMenu {
     public Reserva create(
 
             @Parameter(maxLength = 40)
-            @ParameterLayout(named = "Nombre: ")
+            @ParameterLayout(named = "Estadia Nº: ")
             final String nombre,
 
             @Parameter(optionality = Optionality.MANDATORY)
