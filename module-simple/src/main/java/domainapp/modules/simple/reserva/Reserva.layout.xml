@@ -35,7 +35,8 @@
                         <c:action id="Borrar">
                             <c:describedAs>Elimina este objeto del almacén de datos persistente</c:describedAs>
                         </c:action>
-                        <c:property id="name" namedEscaped="false">
+                        <c:property id="Estadia Nº" namedEscaped="false">
+			            <c:property id="habitacion" namedEscaped="true"/>
                             <c:action id="updateName" promptStyle="INLINE"/>
                         </c:property>
                         <c:property id="notes" namedEscaped="true" multiLine="5" hidden="ALL_TABLES"/>
