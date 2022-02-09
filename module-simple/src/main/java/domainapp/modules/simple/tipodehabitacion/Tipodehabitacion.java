@@ -3,6 +3,11 @@ import domainapp.modules.simple.tipodehabitacion.Tipodesexo;
 import domainapp.modules.simple.tipodehabitacion.Tipoprecio;import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.isis.applib.services.message.MessageService;
+import org.apache.isis.applib.services.repository.RepositoryService;
+import org.apache.isis.applib.services.title.TitleService;
+import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
+
 import org.apache.isis.applib.annotation.*;
 
 import javax.jdo.annotations.*;
@@ -60,7 +65,7 @@ public class Tipodehabitacion implements Comparable<Tipodehabitacion>{
     @Title()
     private String nombre;
 
-    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
     @lombok.NonNull
     @Property()
     private Tipodesexo tipodesexo;
@@ -72,6 +77,7 @@ public class Tipodehabitacion implements Comparable<Tipodehabitacion>{
 
     @Column(allowsNull = "false", length = 40)
     @Property()
+    @Title( prepend= "precio por persona:")
     private String monto;
 
     public Tipodehabitacion(
