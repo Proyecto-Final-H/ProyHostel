@@ -31,13 +31,15 @@
                     <bs3:row>
                         <bs3:col span="12">
                             <c:fieldSet name="Datos del Huesped">
+
+                                     <c:property id="name" namedEscaped="false">
+                                    <c:property id="apellido" namedEscaped="false"/>
+                                         <c:action id="updateName" promptStyle="INLINE"/>
+                                </c:property>
+                                <c:property id="notes" namedEscaped="true" multiLine="3" hidden="ALL_TABLES"/>
                                 <c:action id="Borrar">
                                     <c:describedAs>Elimina este objeto del almacén de datos persistente</c:describedAs>
                                 </c:action>
-                                <c:property id="name" namedEscaped="false">
-                                    <c:action id="updateName" promptStyle="INLINE"/>
-                                </c:property>
-                                <c:property id="notes" namedEscaped="true" multiLine="5" hidden="ALL_TABLES"/>
                             </c:fieldSet>
                         </bs3:col>
                     </bs3:row>
