@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.datanucleus.query.typesafe.TypesafeQuery;
+import org.joda.time.LocalDate;
 
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
@@ -59,7 +60,6 @@ public class RepoGastos {
         return repositoryService.allInstances(Gastos.class);
     }
 
-
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
     @MemberOrder(sequence = "2")
@@ -86,7 +86,6 @@ public class RepoGastos {
         return q.setParameter("name", name)
                 .executeUnique();
     }
-
     @Programmatic
     public void ping() {
         TypesafeQuery<Gastos> q = isisJdoSupport.newTypesafeQuery(Gastos.class);
@@ -109,18 +108,16 @@ public class RepoGastos {
     public Gastos create(
             @ParameterLayout(named="Name")
             final String name,
-//            @ParameterLayout(named = "Monto") 
-//            final Integer monto,
+            @ParameterLayout(named = "Importe")
+            final Integer importe,
             final Tipodegasto tipodegasto,
+            @ParameterLayout(named= "Fecha")
+            final LocalDate fecha,
             @ParameterLayout(named = "Numerofactura")
             final Integer numerofactura
-    //        @ParameterLayout(named="tipodegasto")
-            
             ) {
-//    return repositoryService.persist(new Gasto(name,monto,numerofactura));
- 	return repositoryService.persist(new Gastos(name,numerofactura,tipodegasto));
-        //return repositoryService.persist(new Gastos(name));
-    }
+ 	return repositoryService.persist(new Gastos(name,importe,numerofactura,fecha,tipodegasto));
+   }
 
     @javax.inject.Inject
     RepositoryService repositoryService;
