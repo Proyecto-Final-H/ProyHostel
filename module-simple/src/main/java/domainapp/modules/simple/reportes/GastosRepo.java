@@ -4,7 +4,19 @@ public class GastosRepo {
     private String name;
     public GastosRepo(String name){
         this.name = name;
+        this.importe = importe;
+        this.numerofactura = numerofactura;
+        this.tipodegasto = tipodegasto;
+        this.fecha = fecha;
     }
-    public GastosRepo(){}
+    public GastosRepo() {
+    }
     public String getName(){ return  this.name; }
+    public Integer getImporte(){return this.importe;}
+    public Integer getNumerofactura(){return this.numerofactura;}
+    public String getTipodegasto(){return this.tipodegasto;}
+    public String getFecha() {
+        return fecha;
+    }
+
 }
