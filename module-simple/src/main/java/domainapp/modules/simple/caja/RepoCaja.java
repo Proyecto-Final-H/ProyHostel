@@ -36,6 +36,8 @@ import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.value.Blob;
+import domainapp.modules.simple.reportes.EjecutarReportes;
+import net.sf.jasperreports.engine.JRException;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
@@ -91,7 +93,14 @@ public class RepoCaja {
         q.orderBy(candidate.name.asc());
         q.executeList();
     }
-
+    //Reporte
+    @Action()
+    @ActionLayout(named = "Exportar Listado de Caja")
+    public Blob exportarListado() throws JRException, IOException {
+        EjecutarReportes ejecutarReportes = new EjecutarReportes();
+        return ejecutarReportes.ListadoCajaPDF(repositoryService.allInstances(Caja.class));
+    }
+    //Fin Reporte
     public static class CreateDomainEvent extends ActionDomainEvent<RepoCaja> {}
     @Action(domainEvent = CreateDomainEvent.class)
     @MemberOrder(sequence = "4")
