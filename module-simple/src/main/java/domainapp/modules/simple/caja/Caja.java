@@ -93,6 +93,14 @@ public class Caja implements Comparable<Caja> {
     @Property()
     private String numerofactura;
 
+ //Reporte
+ public String RepoName() { return this.name; }
+ public Integer RepoImporte() { return this.importe;}
+ public LocalDate RepoFecha() { return this.fecha;}
+ public String RepoNumerofactura(){ return this.numerofactura;}
+ public String  RepoCondicioniva(){ return this.condicioniva.toString(); }
+ public String RepoCondicionvent(){ return this.condicionvent.toString(); }
+//fin reporte
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Caja updateName(
             @Parameter(maxLength = 40)
