@@ -55,7 +55,7 @@ public class Huesped implements Comparable<Huesped> {
 
     @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
     @lombok.NonNull
-    @Property() // editing disabled by default, see isis.properties
+    @Property()
     @Title(prepend = "Huesped: ")
     private String name;
 
@@ -66,13 +66,8 @@ public class Huesped implements Comparable<Huesped> {
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
-    @Title( prepend= " Apellido: ")
+    @Title( prepend= ",")
     private String apellido;
-
-//    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
-//    @lombok.NonNull
-//    @Property()
-//    private Pais pais;
 
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
@@ -83,18 +78,23 @@ public class Huesped implements Comparable<Huesped> {
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
-    @Title( prepend= " NumTelefono: ")
+    @Title( prepend= " Tel:")
     private String numTelefono;
+
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @Property(editing = Editing.ENABLED,
+            regexPattern = "(\\w+\\.)*\\w+@(\\w+\\.)+[A-Za-z]+",
+            regexPatternFlags= Pattern.CASE_INSENSITIVE,
+            regexPatternReplacement = "Mail incorrecto, debe ser un email valido (contiene un '@' simbolo)"
+    )
+    @lombok.NonNull
+    private String email;
 
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
-    @Title( prepend= " Email: ")
-    private String email;
+    private Pais pais;
 
-//    public Huesped(final String name, final String apellido, final String dni, final Pais pais, final String numTelefono, final String email) {
-//
-//    }
 
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Huesped updateName(
@@ -103,14 +103,14 @@ public class Huesped implements Comparable<Huesped> {
             final String name,
             @ParameterLayout(named = "Apellido")
             final String apellido,
-//            @ParameterLayout(named = "Pais")
-//            final Pais pais,
             @ParameterLayout(named = "DNI")
              final String dni,
             @ParameterLayout(named = "Numero de Telefono")
             final String numTelefono,
             @ParameterLayout(named = "Email")
-            final String email
+            final String email,
+            @ParameterLayout(named = "Pais")
+            final Pais pais
                             ) {
         setName(name);
         setApellido(apellido);
@@ -128,7 +128,7 @@ public class Huesped implements Comparable<Huesped> {
         return name != null && name.contains("!") ? TranslatableString.tr("Exclamation mark is not allowed") : null;
     }
 
-
+//inicio Boton de Borrar
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
     public void delete() {
         final String title = titleService.titleOf(this);
@@ -136,7 +136,7 @@ public class Huesped implements Comparable<Huesped> {
         repositoryService.remove(this);
     }
 
-
+//fin boton de borrar
     @Override
     public String toString() {
         return getName();
