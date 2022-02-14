@@ -17,12 +17,11 @@
  *  under the License.
  */
 package domainapp.modules.simple.caja;
-import domainapp.modules.simple.caja.Condicioniva;
-import domainapp.modules.simple.caja.Condicionvent;
+
+import java.io.IOException;
 import java.util.List;
-
 import org.datanucleus.query.typesafe.TypesafeQuery;
-
+import org.joda.time.LocalDate;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.BookmarkPolicy;
@@ -36,6 +35,7 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
+import org.apache.isis.applib.value.Blob;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
@@ -100,21 +100,15 @@ public class RepoCaja {
             final String name,
             final Condicionvent condicionvent,
             final Condicioniva condicioniva,
-//            @ParameterLayout(named = "Monto") 
-//            final Integer monto,
-     //       final Tipodepago tipodepago,
-            @ParameterLayout(named = "Numerofactura")
-            final Integer numerofactura
-    //        @ParameterLayout(named="tipodegasto")
-            
+            @ParameterLayout(named= "Fecha")
+            final LocalDate fecha,
+            @ParameterLayout(named = "Importe")
+            final Integer importe,
+             @ParameterLayout(named = "Numerofactura")
+            final String numerofactura
             ) {
-//    return repositoryService.persist(new Gasto(name,monto,numerofactura));
-        return repositoryService.persist(new Caja(name,condicionvent,condicioniva,numerofactura));//numerofactura));
-   //     return repositoryService.persist(new Caja(name,numerofactura,tipodepago));
-
-        //return repositoryService.persist(new Caja(name));
+      return repositoryService.persist(new Caja(name,condicionvent,condicioniva,fecha,importe,numerofactura));
     }
-
     @javax.inject.Inject
     RepositoryService repositoryService;
 
