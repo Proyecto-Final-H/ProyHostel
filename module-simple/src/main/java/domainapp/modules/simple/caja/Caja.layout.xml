@@ -27,10 +27,10 @@
     <bs3:row>
         <bs3:col span="6">
             <bs3:tabGroup>
-                <bs3:tab name="Gastos Cargado Como:">
+                <bs3:tab name="Factura a Nombre de:">
                     <bs3:row>
                         <bs3:col span="12">
-                            <c:fieldSet name="Datos del Gastos">
+                            <c:fieldSet name="Datos Factura">
                                 <c:action id="Borrar">
                         			 <c:describedAs>Elimina este objeto del almacén de datos persistente</c:describedAs>
                                 </c:action>
@@ -42,17 +42,17 @@
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
-                <bs3:tab name="Nota o especificacion de Gasto ">
+                <bs3:tab name="Nota o especificacion de Ingreso ">
                     <bs3:row>
                         <bs3:col span="12">
                             <c:fieldSet name="Metadata"/>
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
-                <bs3:tab name="Dettale de Gasto">
+                <bs3:tab name="Detalle de Caja">
                     <bs3:row>
                         <bs3:col span="12">
-                            <c:fieldSet name="Detalles de Gastos" unreferencedProperties="true"/>
+                            <c:fieldSet name="Detalles de Ingreso" unreferencedProperties="true"/>
                         </bs3:col>
                     </bs3:row>
                 </bs3:tab>
