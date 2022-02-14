@@ -17,14 +17,12 @@
  *  under the License.
  */
 package domainapp.modules.simple.caja;
-
-import domainapp.modules.simple.caja.Condicioniva;
-import domainapp.modules.simple.caja.Condicionvent;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.google.common.collect.ComparisonChain;
-
+import org.joda.time.LocalDate;
 import org.apache.isis.applib.annotation.Action;
 import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.DomainObject;
@@ -39,6 +37,7 @@ import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.services.title.TitleService;
+import org.apache.isis.schema.utils.jaxbadapters.JodaDateTimeStringAdapter;
 
 import lombok.AccessLevel;
 import static org.apache.isis.applib.annotation.CommandReification.ENABLED;
@@ -48,7 +47,7 @@ import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_Y
 @javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE, schema = "simple")
 @javax.jdo.annotations.DatastoreIdentity(strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY, column="id")
 @javax.jdo.annotations.Version(strategy= VersionStrategy.DATE_TIME, column="version")
-@javax.jdo.annotations.Unique(name="Caja_name_UNQ", members = {"name"})
+@javax.jdo.annotations.Unique(name="Caja_name_UNQ", members = {"numerofactura"})
 @DomainObject(auditing = Auditing.ENABLED)
 @DomainObjectLayout()  // causes UI events to be triggered
 @lombok.Getter @lombok.Setter
@@ -57,10 +56,10 @@ public class Caja implements Comparable<Caja> {
 
     @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
     @lombok.NonNull
-    @Property()// editing disabled by default, see isis.properties
-    @Title(prepend = "Caja: ")
+    @Property()
+    @Title(prepend = "Factura Nº= ")
     private String name;
-    
+
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
@@ -72,52 +71,50 @@ public class Caja implements Comparable<Caja> {
     @Property()
     @Title(prepend = "Condicion IVA= ")
     private Condicioniva condicioniva;
-    
-    @javax.jdo.annotations.Column(allowsNull = "true", length = 4000)
-    @Property(editing = Editing.ENABLED)
-    @Title(prepend = "Detalle de Pedido: ")
-    private String notes;
 
-//    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
-//    @lombok.NonNull
-//    @Property()
-//    @Title(prepend = "Monto: ")
-//    private Integer monto;
-//        
     @javax.jdo.annotations.Column(allowsNull = "true")
     @lombok.NonNull
     @Property()
-    private Integer numerofactura;
+    @XmlJavaTypeAdapter(JodaDateTimeStringAdapter.ForJaxb.class)
+    private LocalDate fecha;
     
- //   @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
- //   @lombok.NonNull
- //   @Property()
-  //  @Title(prepend = "Tipodegasto: ")
-  //  private Tipodepago Tipodepago;
-    
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 400)
+    @Property(editing = Editing.ENABLED)
+    @Title(prepend = "Detalle de Ingreso: ")
+    private String notes;
+
+    @javax.jdo.annotations.Column(allowsNull = "true")
+    @lombok.NonNull
+    @Property()
+    private Integer importe;
+
+    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
+    @lombok.NonNull
+    @Property()
+    private String numerofactura;
+
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Caja updateName(
             @Parameter(maxLength = 40)
-            @ParameterLayout(named = "Nombre")
+            @ParameterLayout(named = "name")
             final String name,
-   //         @ParameterLayout(named = "Monto")
-//            final Integer monto,
-            @ParameterLayout(named = "Numerofactura") 
             @Parameter(maxLength = 40)
             @ParameterLayout(named = "condicionvent")
             final String condicionvent,
             @Parameter(maxLength = 40)
             @ParameterLayout(named = "condicioniva")
             final String condicioniva,
-            final Integer numerofactura
-  //         @Parameter(maxLength = 40)
-	//	    @ParameterLayout(named = "Tipodepago")
-	//	    final String Tipodepago
+            @ParameterLayout(named= "Fecha")
+            final LocalDate fecha,
+           @ParameterLayout(named = "Importe")
+            final Integer importe,
+             @ParameterLayout(named = "Numerofactura")
+                final String numerofactura
 		    ) {
         setName(name);
-      //  setMonto(monto);
+        setFecha(fecha);
+        setImporte(importe);
         setNumerofactura(numerofactura);
-    //    setTipodegasto(tipodegasto);
         return this;
     }
 
@@ -137,7 +134,6 @@ public class Caja implements Comparable<Caja> {
         repositoryService.remove(this);
     }
 
-
     @Override
     public String toString() {
         return getName();
@@ -148,7 +144,6 @@ public class Caja implements Comparable<Caja> {
                 .compare(this.getName(), other.getName())
                 .result();
     }
-
 
     @javax.inject.Inject
     @javax.jdo.annotations.NotPersistent
