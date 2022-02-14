@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import domainapp.modules.simple.caja.Caja;
 import domainapp.modules.simple.reportes.CajaRepo;
 import domainapp.modules.simple.gastos.Gastos;
+import domainapp.modules.simple.gastos.RepoGastos;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -24,7 +25,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.apache.isis.applib.value.Blob;
-//import domainapp.modules.simple.gastos.Gastos;
 
 public class EjecutarReportes {
 
@@ -53,10 +53,13 @@ public class EjecutarReportes {
         gastosRepos.add(new GastosRepo());
 
         for (Gastos gastos : gasto) {
-            GastosRepo gastosRepo = new GastosRepo(gastos.RepoName());
-            //caja.RepoCondicionvent(), caja.RepoCondicioniva(),,  caja.RepoNumerofactura()
-            // .RepoName());// caja.RepoApellido(), caja.RepoFechaAlta().toString("dd-MM-yyyy"), caja.RepoEdad(), caja.RepoIncapacidad(), caja.RepoObservacion());
-            gastosRepos.add(gastosRepo);
+            GastosRepo gastosRepo =new GastosRepo(
+                    gastos.RepoName(),
+                    gastos.RepoImporte(),
+                    gastos.RepoNumeroFactura(),
+                    gastos.RepoTipodegasto(),
+                    gastos.RepoFecha().toString("dd-MM-yyyy"));
+         gastosRepos.add(gastosRepo);
         }
 
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(gastosRepos);
