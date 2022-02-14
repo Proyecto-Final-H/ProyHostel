@@ -17,6 +17,7 @@
  *  under the License.
  */
 package domainapp.modules.simple.huesped;
+
 import java.util.List;
 
 import org.datanucleus.query.typesafe.TypesafeQuery;
@@ -34,8 +35,6 @@ import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
-
-import domainapp.modules.simple.huesped.Pais;
 
 @DomainService(
         nature = NatureOfService.VIEW_MENU_ONLY,
@@ -103,13 +102,14 @@ public class RepoHuesped {
             final String apellido,
             @ParameterLayout(named ="DNI" )
             final String dni,
- //           final Pais pais,
             @ParameterLayout(named = "NumTelefono")
             final String numTelefono,
             @ParameterLayout (named = "Email")
-            final  String email
+            final  String email,
+            @ParameterLayout(named = "Pais")
+            final Pais pais
         ) {
-        return repositoryService.persist(new Huesped(name,apellido,dni,numTelefono,email));
+        return repositoryService.persist(new Huesped(name,apellido,dni,numTelefono,email,pais));
     }
 
     @javax.inject.Inject
