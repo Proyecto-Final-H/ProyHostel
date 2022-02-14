@@ -9,7 +9,7 @@ import java.util.Map;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+import org.joda.time.LocalDate;
 import domainapp.modules.simple.caja.Caja;
 import domainapp.modules.simple.reportes.CajaRepo;
 import domainapp.modules.simple.gastos.Gastos;
@@ -28,14 +28,19 @@ import org.apache.isis.applib.value.Blob;
 
 public class EjecutarReportes {
 
-    public Blob ListadoCajaPDF(List<Caja> cajas) throws JRException, IOException {
+   public Blob ListadoCajaPDF(List<Caja> cajas) throws JRException, IOException {
 
         List<CajaRepo> cajaRepos = new ArrayList<>();
         cajaRepos.add(new CajaRepo());
 
         for (Caja caja : cajas) {
-            CajaRepo cajaRepo = new CajaRepo(caja.RepoName());
-            //caja.RepoCondicionvent(), caja.RepoCondicioniva(),,  caja.RepoNumerofactura()
+            CajaRepo cajaRepo = new CajaRepo(caja.RepoName(),
+                    caja.RepoImporte(),
+                    caja.RepoFecha().toString("dd-MM-yyyy"),
+                    caja.RepoNumerofactura(),
+                    caja.RepoCondicioniva(),
+                    caja.RepoCondicionvent()
+                    );
             cajaRepos.add(cajaRepo);
         }
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(cajaRepos);
