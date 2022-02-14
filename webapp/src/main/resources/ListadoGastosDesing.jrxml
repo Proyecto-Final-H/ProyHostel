@@ -35,20 +35,20 @@
 			<![CDATA[]]>
 		</queryString>
 		<field name="name" class="java.lang.String"/>
-		<!--<field name="apellido" class="java.lang.String"/>
-		<field name="edad" class="java.lang.String"/>
-		<field name="telefono" class="java.lang.String"/>
-		<field name="nroMatricula" class="java.lang.String"/>-->
+		<field name="importe" class="java.lang.Integer"/>
+		<field name="fecha" class="java.lang.String"/>
+		<field name="numerofactura" class="java.lang.Integer"/>
+		<field name="tipodegasto" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="ds" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="name" class="java.lang.String"/>
-<!--	<field name="apellido" class="java.lang.String"/>
-	<field name="edad" class="java.lang.String"/>
-	<field name="telefono" class="java.lang.String"/>
-	<field name="nroMatricula" class="java.lang.String"/>-->
+	<field name="importe" class="java.lang.Integer"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="numerofactura" class="java.lang.Integer"/>
+	<field name="tipodegasto" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
