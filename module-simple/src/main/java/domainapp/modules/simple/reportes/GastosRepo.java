@@ -1,8 +1,13 @@
 package domainapp.modules.simple.reportes;
 
 public class GastosRepo {
-    private String name;
-    public GastosRepo(String name){
+    public String name;
+    public Integer importe;
+    public Integer numerofactura;
+    public String tipodegasto;
+    public String fecha;
+
+    public GastosRepo(String name, Integer importe,Integer numerofactura, String tipodegasto, String fecha) {
         this.name = name;
         this.importe = importe;
         this.numerofactura = numerofactura;
