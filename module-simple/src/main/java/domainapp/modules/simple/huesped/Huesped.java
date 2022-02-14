@@ -17,14 +17,16 @@
  *  under the License.
  */
 package domainapp.modules.simple.huesped;
+import java.util.regex.Pattern;
 
+import javax.jdo.annotations.DatastoreIdentity;
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Version;
 import javax.jdo.annotations.VersionStrategy;
-
 import com.google.common.collect.ComparisonChain;
-
 import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.Auditing;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.Editing;
@@ -37,20 +39,36 @@ import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.services.title.TitleService;
-import domainapp.modules.simple.huesped.Pais;
+
 import lombok.AccessLevel;
 import static org.apache.isis.applib.annotation.CommandReification.ENABLED;
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
 import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
 
-@javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE, schema = "simple")
-@javax.jdo.annotations.DatastoreIdentity(strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY, column="id")
-@javax.jdo.annotations.Version(strategy= VersionStrategy.DATE_TIME, column="version")
+@PersistenceCapable(
+        identityType=IdentityType.DATASTORE,
+        schema = "simple",
+        table = "huesped"
+)
+@DatastoreIdentity(
+        strategy= IdGeneratorStrategy.IDENTITY,
+        column="id")
+@Version(strategy= VersionStrategy.VERSION_NUMBER,
+        column="version")
+/*
+@Queries({
+        @Query(
+                name = "find", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM domainapp.modules.simple.huesped.Huesped"
+                       ),
+})*/
 @javax.jdo.annotations.Unique(name="Huesped_name_UNQ", members = {"name"})
-@DomainObject(auditing = Auditing.ENABLED)
-@DomainObjectLayout()  // causes UI events to be triggered
+@DomainObject(editing = Editing.DISABLED)
+@DomainObjectLayout()
 @lombok.Getter @lombok.Setter
 @lombok.RequiredArgsConstructor
+
 public class Huesped implements Comparable<Huesped> {
 
     @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
