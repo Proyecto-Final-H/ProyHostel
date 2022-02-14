@@ -84,6 +84,10 @@ public class Gastos implements Comparable<Gastos> {
     
     //Reporte
     public String RepoName() { return this.name; }
+    public Integer RepoImporte() { return this.importe; }
+    public Integer RepoNumeroFactura(){ return this.numerofactura; }
+    public String  RepoTipodegasto(){ return this.tipodegasto.toString();}
+    public LocalDate RepoFecha() { return this.fecha; }
     //fin reporte
     @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
     public Gastos updateName(
