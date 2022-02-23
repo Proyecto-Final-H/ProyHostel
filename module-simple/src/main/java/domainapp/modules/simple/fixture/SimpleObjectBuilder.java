@@ -23,6 +23,8 @@ import org.apache.isis.applib.fixturescripts.BuilderScriptAbstract;
 
 import domainapp.modules.simple.huesped.Huesped;
 import domainapp.modules.simple.huesped.RepoHuesped;
+import domainapp.modules.simple.reserva.Reserva;
+import domainapp.modules.simple.reserva.RepoReserva;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -47,5 +49,7 @@ public class SimpleObjectBuilder extends BuilderScriptAbstract<Huesped, SimpleOb
     @javax.inject.Inject
     RepoHuesped repoHuesped;
 //    RepoHuesped RepoHuesped;
+    @javax.inject.Inject
+    RepoReserva repoReserva;
 
 }

@@ -22,7 +22,7 @@
         <bs3:col span="2">
             <bs3:sizeSpan size="LG" span="2" offset="true"/>
             <bs3:row>
-                <bs3:col span="12" unreferencedActions="true">
+                <bs3:col span="3" unreferencedActions="true">
                     <domainObject/>
                     <action id="clearHints" hidden="EVERYWHERE"/>
                     <action id="downloadLayoutXml" hidden="EVERYWHERE"/>
@@ -31,10 +31,10 @@
                 </bs3:col>
             </bs3:row>
         </bs3:col>
-        <bs3:col span="4" unreferencedCollections="true">
+        <bs3:col span="12" unreferencedCollections="true">
             <bs3:row>
                 <bs3:col span="12">
-                    <collection id="objects" defaultView="table"/>
+                    <collection id="reserva" defaultView="calendar"/>
                 </bs3:col>
             </bs3:row>
         </bs3:col>
