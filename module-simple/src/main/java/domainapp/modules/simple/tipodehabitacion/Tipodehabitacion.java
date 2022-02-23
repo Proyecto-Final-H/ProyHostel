@@ -1,6 +1,7 @@
 package domainapp.modules.simple.tipodehabitacion;
 import domainapp.modules.simple.tipodehabitacion.Tipodesexo;
-import domainapp.modules.simple.tipodehabitacion.Tipoprecio;import lombok.AccessLevel;
+import domainapp.modules.simple.tipodehabitacion.Tipoprecio;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.isis.applib.services.message.MessageService;
@@ -42,10 +43,10 @@ import java.util.List;
                 name = "findByDni", language = "JDOQL",
                 value = "SELECT "
                         + "FROM domainapp.modules.simple.tipodehabitacion.Tipodehabitacion "
-                        + "WHERE camas == :camas "
-                        + "ORDER BY camas ASC")
+                        + "WHERE nombre == :nombre "
+                        + "ORDER BY nombre ASC")
 })
-@Unique(name="Tipodehabitacion_dni_UNQ", members = {"camas"})
+@Unique(name="Tipodehabitacion_dni_UNQ", members = {"nombre"})
 @DomainObject(
         editing = Editing.DISABLED
 )
@@ -53,9 +54,11 @@ import java.util.List;
         bookmarking = BookmarkPolicy.AS_ROOT
 )
 @Getter @Setter
+@lombok.RequiredArgsConstructor
 public class Tipodehabitacion implements Comparable<Tipodehabitacion>{
 
     @Column(allowsNull = "false", length = 40)
+    @lombok.NonNull
     @Property()
     @Title()
     private String camas;
@@ -65,8 +68,7 @@ public class Tipodehabitacion implements Comparable<Tipodehabitacion>{
     @Title()
     private String nombre;
 
-    @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
-    @lombok.NonNull
+    @javax.jdo.annotations.Column
     @Property()
     private Tipodesexo tipodesexo;
 
@@ -90,6 +92,8 @@ public class Tipodehabitacion implements Comparable<Tipodehabitacion>{
 
         this.camas = camas;
         this.nombre = nombre;
+        this.tipodesexo = tipodesexo;
+        this.tipoprecio = tipoprecio;
         this.monto = monto;
 
     }
@@ -121,8 +125,8 @@ public class Tipodehabitacion implements Comparable<Tipodehabitacion>{
             @ParameterLayout(named = "Nombre: ")
             final String nombre,
 
-           /* @ParameterLayout(named = "Genero de la Habitacion")
-            final String tipodesexo,*/
+            @ParameterLayout(named = "Genero de la Habitacion")
+            final String tipodesexo,
 
             @Parameter(maxLength = 40)
             @ParameterLayout(named = "Precio por Personas: ")

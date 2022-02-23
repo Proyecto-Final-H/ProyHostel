@@ -42,7 +42,7 @@ public class TipodehabitacionMenu {
         return tipodehabitacionrepository.create(camas, nombre, tipodesexo, tipoprecio, monto);
     }
 
-
+//
     @Action(semantics = SemanticsOf.SAFE)
     @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT, named = "Buscar Tipo de habitacion")
     @MemberOrder(sequence = "2")
