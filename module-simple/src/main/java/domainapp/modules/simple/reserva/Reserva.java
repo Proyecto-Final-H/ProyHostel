@@ -18,126 +18,236 @@
  */
 package domainapp.modules.simple.reserva;
 
+import java.util.List;
+import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Queries;
+import javax.jdo.annotations.Query;
 import javax.jdo.annotations.VersionStrategy;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import com.google.common.collect.ComparisonChain;
-
 import org.joda.time.LocalDate;
-
 import org.apache.isis.applib.annotation.Action;
+import org.apache.isis.applib.annotation.ActionLayout;
 import org.apache.isis.applib.annotation.Auditing;
+import org.apache.isis.applib.annotation.BookmarkPolicy;
 import org.apache.isis.applib.annotation.DomainObject;
 import org.apache.isis.applib.annotation.DomainObjectLayout;
 import org.apache.isis.applib.annotation.Editing;
+import org.apache.isis.applib.annotation.Optionality;
 import org.apache.isis.applib.annotation.Parameter;
 import org.apache.isis.applib.annotation.ParameterLayout;
+import org.apache.isis.applib.annotation.Programmatic;
 import org.apache.isis.applib.annotation.Property;
+import org.apache.isis.applib.annotation.PropertyLayout;
 import org.apache.isis.applib.annotation.Publishing;
+import org.apache.isis.applib.annotation.SemanticsOf;
 import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.services.i18n.TranslatableString;
 import org.apache.isis.applib.services.message.MessageService;
 import org.apache.isis.applib.services.repository.RepositoryService;
 import org.apache.isis.applib.services.title.TitleService;
 import org.apache.isis.schema.utils.jaxbadapters.JodaDateTimeStringAdapter;
-
 import org.isisaddons.wicket.fullcalendar2.cpt.applib.CalendarEvent;
 import org.isisaddons.wicket.fullcalendar2.cpt.applib.CalendarEventable;
+import domainapp.modules.simple.habitacion.HabitacionRepositorio;
+import domainapp.modules.simple.habitacion.Habitacion;
+import domainapp.modules.simple.huesped.Huesped;
+import domainapp.modules.simple.huesped.RepoHuesped;
+import domainapp.modules.simple.tipodehabitacion.Tipodehabitacion;
 import lombok.AccessLevel;
 import static org.apache.isis.applib.annotation.CommandReification.ENABLED;
 import static org.apache.isis.applib.annotation.SemanticsOf.IDEMPOTENT;
 import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
-
-@javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE, schema = "simple")
-@javax.jdo.annotations.DatastoreIdentity(strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY, column="id")
-@javax.jdo.annotations.Version(strategy= VersionStrategy.DATE_TIME, column="version")
-@javax.jdo.annotations.Unique(name="Reserva_name_UNQ", members = {"name"})
-@DomainObject(auditing = Auditing.ENABLED)
-@DomainObjectLayout()  // causes UI events to be triggered
+import lombok.Getter;
+import lombok.Setter;
+import javax.jdo.annotations.*;
 @lombok.Getter @lombok.Setter
-@lombok.RequiredArgsConstructor
+//@lombok.RequiredArgsConstructor
+
+@PersistenceCapable(
+        identityType=IdentityType.DATASTORE,
+        schema = "simple",
+        table = "Reserva"
+)
+@DatastoreIdentity(
+        strategy= IdGeneratorStrategy.IDENTITY,
+        column = "id")
+
+@Version(
+        strategy = VersionStrategy.VERSION_NUMBER,
+        column = "version")
+
+@Queries({
+        @Query(
+                        name = "find", language = "JDOQL",
+                        value = "SELECT "
+                                + "FROM domainapp.modules.simple.reserva.Reserva  "
+                                + "ORDER BY nombre ASC"),
+                @Query(
+                        name = "findByNombre", language = "JDOQL",
+                        value = "SELECT "
+                                + "FROM domainapp.modules.simple.reserva.Reserva "
+                                + "WHERE nombre == :nombre "),
+        @Query(
+                name = "findByHuesped", language = "JDOQL",
+                value = "SELECT "
+                        + "FROM domainapp.modules.simple.reserva.Reserva "
+                        + "WHERE huesped == :huesped "
+                        + "ORDER BY nombre ASC"),
+     })
+
+        @Unique(name = "Reserva_nombre_UNQ", members = { "nombre" })
+        @DomainObject(
+                editing = Editing.DISABLED
+        )
+        @DomainObjectLayout(
+                bookmarking = BookmarkPolicy.AS_ROOT
+        )
+
 public class Reserva implements Comparable<Reserva>, CalendarEventable{
-//clase principal de Reserva
-    @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
-    @lombok.NonNull
-    @Property() // editing disabled by default, see isis.properties
-    @Title(prepend = "Reserva: ")
-    private String name;
+    @Column(allowsNull = "false", length =40)
+    @Property()
+    private String nombre;
+
+    @Column(allowsNull = "false")
+    @Property()
+    private Huesped  huesped;
+
+    @Column(allowsNull = "false")
+    @Property()
+    private Habitacion habitacion;
+
+
+    @Column(allowsNull ="false")
+    @Property()
+    @Title( prepend= " Fecha de Reserva ")
+    @XmlJavaTypeAdapter(JodaDateTimeStringAdapter.ForJaxb.class)
+    private LocalDate fechaAlta;
+
+    @Column(allowsNull = "false")
+    @Property()
+    private int cantdias;
+
+    @Column(allowsNull = "false")
+    @Property()
+    private int precio;
+/*    public String title(){
+        return getNombre();
+    }*/
+      public String Huesped(){
+        return this.huesped.toString();
+    }
+    public String Habitacion(){
+        return this.habitacion.toString();
+    }
+
+public Reserva(
+        final String nombre,
+        final Huesped huesped,
+        final Habitacion habitacion,
+        final LocalDate fechaAlta,
+        final int cantdias,
+        final int precio
+){
+    this.nombre = nombre;
+    this.huesped = huesped;
+    this.habitacion = habitacion;
+    this.fechaAlta =fechaAlta;
+    this.cantdias = cantdias;
+    this.precio = precio;
+}
+    @Action()
+    @ActionLayout(named = "Editar")
+    public Reserva update(
+
+            @Parameter(maxLength = 40)
+            @ParameterLayout(named = "Estadia Nº: ")
+            final String nombre,
+			@Parameter(optionality = Optionality.MANDATORY)
+            @ParameterLayout(named = "Huesped: ")
+            final Huesped huesped,
+
+            @Parameter(optionality = Optionality.MANDATORY)
+            @ParameterLayout(named = "Habitacion: ")
+           final Habitacion habitacion,
+
+            @Parameter(optionality = Optionality.MANDATORY)
+            @ParameterLayout(named = "Fecha de  Reserva: ")
+            final LocalDate fechaAlta,
+
+            @Parameter(optionality = Optionality.MANDATORY)
+            @ParameterLayout(named = "Cantidad de dias de estadia: ")
+             final int cantdias,
+
+            @Parameter(optionality = Optionality.MANDATORY)
+            @ParameterLayout(named = "Saldo a Pagar: ")
+            final int precio
+    )
+    {
+        this.nombre = nombre;
+        this.huesped = huesped;
+        this.habitacion = habitacion;
+        this.fechaAlta = fechaAlta;
+        this.cantdias = cantdias;
+        this.precio = precio;
+        return this;
+    }
+
+    public String default0Update() {return getNombre();}
+
+    @Override
+    public int compareTo(final Reserva other) {
+        return org.apache.isis.applib.util.ObjectContracts.compare(this, other, "nombre");
+    }
+
+    @Override
+    public String toString() {
+        return org.apache.isis.applib.util.ObjectContracts.toString(this, "nombre");
+    }
+
+
     //Estados
     @javax.jdo.annotations.Column(allowsNull = "true", name = "estado")
     @Property()
     private EstadoReserva estado;
     //fin parte Estados
 
-    @javax.jdo.annotations.Column(allowsNull = "true")
-    @lombok.NonNull
-    @Property() // editing disabled by default, see isis.properties
-    @XmlJavaTypeAdapter(JodaDateTimeStringAdapter.ForJaxb.class)
-    private LocalDate fechaAlta;
-    @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
-    @Property(editing = Editing.ENABLED)
-    private String notes;
-
-
-
-
-
-    @Action(semantics = IDEMPOTENT, command = ENABLED, publishing = Publishing.ENABLED, associateWith = "name")
-    //Estados
-    public String iconName(){
-        if (this.estado == EstadoReserva.Reservada){
-            return "Reservada";
-        }else{
-            return "Ocupada";
-        }
-    }
-    //fin parte Estados
-    public LocalDate RepoFechaAlta() { return this.fechaAlta; }
-    public Reserva updateName(
-            @Parameter(maxLength = 40)
-            @ParameterLayout(named = "Nombre")
-            final String name,
-
-            @Parameter(maxLength = 40)
-            @ParameterLayout(named = "Fecha de Alta")
-            final LocalDate fechaAlta
-                            ) {
-        setName(name);
-        this.fechaAlta = fechaAlta;
-       // this.fechaAlta = fechaAlta;
-        
-        return this;
-    }
-    //Estados
+    //Estados ok
     @Programmatic
     public void CambiarEstado (EstadoReserva estado){
         this.estado = estado;
     }
-    
     @Action()
-    @ActionLayout(named = "Reservar")
+    @ActionLayout(named = "Reservar Habitacion")
     public Reserva Reservada(){
         CambiarEstado(EstadoReserva.Reservada);
+        messageService.informUser("Habitacion Reservada");
         return this;
     }
     @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
-    @ActionLayout(named = "Ingreso Habitacion ocupada")
+    @ActionLayout(named = "Ingresar Habitacion")
     public Reserva Ocupada(){
+       /* if (getEstado().equals(EstadoReserva.Liberada)) {
+            messageService.warnUser("No es posible Reservar la habitacion ya esta ocupada!");
+        } else {*/
         CambiarEstado(EstadoReserva.Ocupada);
+        messageService.informUser("Puede ingresar a la Habitacion");
+      //  }
+        return this;
+    }
+    @Action(semantics = SemanticsOf.IDEMPOTENT_ARE_YOU_SURE)
+    @ActionLayout(named = "Salida de la Habitacion")
+    public Reserva Liberada(){
+        CambiarEstado(EstadoReserva.Liberada);
+        messageService.informUser("Habitacion Liberada");
         return this;
     }
     public boolean hideReservada(){return  this.estado == EstadoReserva.Reservada;}
-    public boolean hideOcupada(){return  this.estado == EstadoReserva.Ocupada;}
+   public boolean hideOcupada(){return  this.estado == EstadoReserva.Ocupada;}
+    public boolean hideLiberada(){return  this.estado == EstadoReserva.Liberada;}
     //fin Estados
-
-    public String default0UpdateName() {
-        return getName();
-    }
-
-    public TranslatableString validate0UpdateName(final String name) {
-        return name != null && name.contains("!") ? TranslatableString.tr("Exclamation mark is not allowed") : null;
-    }
 
 
     @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
@@ -147,25 +257,21 @@ public class Reserva implements Comparable<Reserva>, CalendarEventable{
         repositoryService.remove(this);
     }
 
-
+    @Programmatic
     @Override
-    public String toString() {
-        return getName();
+    public String getCalendarName() {
+        return huesped.getApellido();
     }
+// LocalDate.to getFechaAlta()+""+   " "+ huesped.getDni()
+        @Programmatic
+        @Override
+        public CalendarEvent toCalendarEvent() {
+               return new CalendarEvent(getFechaAlta().toDateTimeAtStartOfDay(),
+                       getCalendarName(),
+                       getNombre());
+            }
+          //return null;
 
-    public int compareTo(final Reserva other) {
-        return ComparisonChain.start()
-                .compare(this.getName(), other.getName())
-                .result();
-    }
-
-        @Override public String getCalendarName() {
-            return null;
-        }
-
-        @Override public CalendarEvent toCalendarEvent() {
-            return null;
-        }
     @javax.inject.Inject
     @javax.jdo.annotations.NotPersistent
     @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
@@ -200,10 +306,4 @@ public class Reserva implements Comparable<Reserva>, CalendarEventable{
     @javax.jdo.annotations.NotPersistent
     @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
     MessageService messageService;
-//
-//    @javax.inject.Inject
-//    @javax.jdo.annotations.NotPersistent
-//    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
-//    RepoHabitacion repoHabitacion;
-
 }

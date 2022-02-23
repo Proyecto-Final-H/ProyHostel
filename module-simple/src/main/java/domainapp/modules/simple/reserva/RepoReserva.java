@@ -17,93 +17,83 @@
  *  under the License.
  */
 package domainapp.modules.simple.reserva;
+
+import domainapp.modules.simple.huesped.Huesped;
 import java.util.List;
-
-import org.datanucleus.query.typesafe.TypesafeQuery;
 import org.joda.time.LocalDate;
-
-import org.apache.isis.applib.annotation.Action;
-import org.apache.isis.applib.annotation.ActionLayout;
-import org.apache.isis.applib.annotation.BookmarkPolicy;
 import org.apache.isis.applib.annotation.DomainService;
-import org.apache.isis.applib.annotation.DomainServiceLayout;
-import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.NatureOfService;
-import org.apache.isis.applib.annotation.ParameterLayout;
 import org.apache.isis.applib.annotation.Programmatic;
-import org.apache.isis.applib.annotation.SemanticsOf;
-import org.apache.isis.applib.services.eventbus.ActionDomainEvent;
+import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.services.jdosupport.IsisJdoSupport;
 import org.apache.isis.applib.services.repository.RepositoryService;
-// Repositorio de Reserva
-//import domainapp.modules.simple.reserva.Reserva;
-
+import domainapp.modules.simple.habitacion.Habitacion;
 
 @DomainService(
-        nature = NatureOfService.VIEW_MENU_ONLY,
-        objectType = "simple.ReservaMenu",
+        nature = NatureOfService.DOMAIN,
+       objectType = "simple.ReservaMenu",
         repositoryFor = Reserva.class
 )
-@DomainServiceLayout(
-        named = "Reservas",
-        menuOrder = "1"
-)
-public class RepoReserva {
 
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    @MemberOrder(sequence = "1")
-
-    public List<Reserva> listAll
-            () {
-      return repositoryService.allInstances(Reserva.class);
-   }
-
-    @Action(semantics = SemanticsOf.SAFE)
-    @ActionLayout(bookmarking = BookmarkPolicy.AS_ROOT)
-    @MemberOrder(sequence = "2")
-    public List<Reserva> findByName(
-            @ParameterLayout(named="Name")
-            final String name
-    ) {
-        TypesafeQuery<Reserva> q = isisJdoSupport.newTypesafeQuery(Reserva.class);
-        final QReserva cand = QReserva.candidate();
-        q = q.filter(
-                cand.name.indexOf(q.stringParameter("name")).ne(-1)
-        );
-        return q.setParameter("name", name)
-                .executeList();
-    }
+public  class RepoReserva {
 
     @Programmatic
-    public Reserva findByNameExact(final String name) {
-        TypesafeQuery<Reserva> q = isisJdoSupport.newTypesafeQuery(Reserva.class);
-        final QReserva cand = QReserva.candidate();
-        q = q.filter(
-                cand.name.eq(q.stringParameter("name"))
-        );
-        return q.setParameter("name", name)
-                .executeUnique();
-    }
-
+    public List<Reserva> Listar(){
+        return repositoryService.allMatches(
+                new QueryDefault<>(
+                        Reserva.class,
+                        "find"));
+}
     @Programmatic
-    public void ping() {
-        TypesafeQuery<Reserva> q = isisJdoSupport.newTypesafeQuery(Reserva.class);
-        final QReserva candidate = QReserva.candidate();
-        q.range(0,2);
-        q.orderBy(candidate.name.asc());
-        q.executeList();
-    }
+    public List<Reserva> Listar(Habitacion habitacion){
 
-    public static class CreateDomainEvent extends ActionDomainEvent<RepoReserva> {}
-    @Action(domainEvent = CreateDomainEvent.class)
-    @MemberOrder(sequence = "3")
-    public Reserva create(
-            @ParameterLayout(named="Name")
-            final String name,
-            final LocalDate fechaAlta
-        ) {
-        return repositoryService.persist(new Reserva(name,fechaAlta));
+        return repositoryService.allMatches(
+                new QueryDefault<>(
+                        Reserva.class,
+                        "findByHabitacion",
+                        "habitacion", habitacion));
+
+    }
+    @Programmatic
+    public List<Reserva> Listar(Huesped huesped){
+
+        return repositoryService.allMatches(
+                new QueryDefault<>(
+                        Reserva.class,
+                        "findByHuesped",
+                        "huesped", huesped));
+
+    }
+    @Programmatic
+    public Reserva findByNombre(final String nombre) {
+
+        return repositoryService.uniqueMatch(
+                new QueryDefault<>(
+                        Reserva.class,
+                        "findByNombre",
+                        "nombre", nombre));
+    }
+    @Programmatic
+    public List<Reserva> findByNombreContains(final String nombre) {
+
+        return repositoryService.allMatches(
+                new QueryDefault<>(
+                        Reserva.class,
+                        "findByNombreContains",
+                        "nombre", nombre));
+    }
+    @Programmatic
+    public Reserva create(final String nombre, final Huesped huesped, final Habitacion habitacion,  final LocalDate fechaAlta, final int cantdias, final int precio ) {
+
+        final Reserva reserva = new Reserva(nombre,
+                huesped,
+                habitacion,
+                fechaAlta,
+                cantdias,
+                precio
+        );
+        repositoryService.persist(reserva);
+        return reserva;
     }
 
     @javax.inject.Inject
