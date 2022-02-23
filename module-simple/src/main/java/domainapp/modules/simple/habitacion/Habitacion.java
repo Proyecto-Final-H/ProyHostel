@@ -20,9 +20,16 @@ package domainapp.modules.simple.habitacion;
 import domainapp.modules.simple.tipodehabitacion.Tipodehabitacion;
 import domainapp.modules.simple.tipodehabitacion.TipodehabitacionRepositorio;
 import lombok.AccessLevel;
+import org.apache.isis.applib.annotation.Title;
 import lombok.Getter;
 import lombok.Setter;
+import static org.apache.isis.applib.annotation.SemanticsOf.NON_IDEMPOTENT_ARE_YOU_SURE;
+
 import org.apache.isis.applib.annotation.*;
+import org.apache.isis.applib.services.message.MessageService;
+import org.apache.isis.applib.services.repository.RepositoryService;
+import org.apache.isis.applib.services.title.TitleService;
+
 
 import javax.jdo.annotations.*;
 import java.util.List;
@@ -73,6 +80,7 @@ public class Habitacion implements Comparable<Habitacion> {
 
     @Column(allowsNull = "false", length = 40)
     @Property()
+    @Title(prepend= "Numero de Habitacion ")
     private String nombre;
 
     @Column(allowsNull = "false")
@@ -81,7 +89,7 @@ public class Habitacion implements Comparable<Habitacion> {
 
     @Column(allowsNull ="false")
     @Property()
-    @Title( prepend= " precio de habitacion")
+    @Title(prepend= "Precio por la  habitacion ")
     private Integer preciohab;
 
     public String title(){
@@ -146,6 +154,14 @@ public class Habitacion implements Comparable<Habitacion> {
     }
     //endregion
 
+
+    @Action(semantics = NON_IDEMPOTENT_ARE_YOU_SURE)
+    public void delete() {
+        final String title = titleService.titleOf(this);
+        messageService.informUser(String.format("'%s' deleted", title));
+        repositoryService.remove(this);
+    }
+
     @javax.inject.Inject
     @NotPersistent
     @Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
@@ -156,4 +172,17 @@ public class Habitacion implements Comparable<Habitacion> {
     @Getter(AccessLevel.NONE) @Setter(AccessLevel.NONE)
     domainapp.modules.simple.habitacion.HabitacionRepositorio habitacionRepository;
 
+    @javax.inject.Inject
+    @javax.jdo.annotations.NotPersistent
+    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
+    TitleService titleService;
+    @javax.inject.Inject
+    @javax.jdo.annotations.NotPersistent
+    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
+    MessageService messageService;
+
+    @javax.inject.Inject
+    @javax.jdo.annotations.NotPersistent
+    @lombok.Getter(AccessLevel.NONE) @lombok.Setter(AccessLevel.NONE)
+    RepositoryService repositoryService;
 }
