@@ -57,19 +57,17 @@ public class Caja implements Comparable<Caja> {
     @javax.jdo.annotations.Column(allowsNull = "false", length = 40)
     @lombok.NonNull
     @Property()
-    @Title(prepend = "Factura Nº= ")
+    @Title(prepend = "Ingreso= ")
     private String name;
 
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
-    @Title(prepend = "Condicion Venta= ")
     private Condicionvent condicionvent;
 
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
-    @Title(prepend = "Condicion IVA= ")
     private Condicioniva condicioniva;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -80,7 +78,7 @@ public class Caja implements Comparable<Caja> {
     
     @javax.jdo.annotations.Column(allowsNull = "true", length = 400)
     @Property(editing = Editing.ENABLED)
-    @Title(prepend = "Detalle de Ingreso: ")
+    @Title(prepend = "Nota: ")
     private String notes;
 
     @javax.jdo.annotations.Column(allowsNull = "true")
@@ -91,6 +89,7 @@ public class Caja implements Comparable<Caja> {
     @javax.jdo.annotations.Column(allowsNull = "true", length = 40)
     @lombok.NonNull
     @Property()
+    @Title(prepend = " Nº Comprobante= ")
     private String numerofactura;
 
  //Reporte
@@ -112,15 +111,15 @@ public class Caja implements Comparable<Caja> {
             @Parameter(maxLength = 40)
             @ParameterLayout(named = "condicioniva")
             final String condicioniva,
-            @ParameterLayout(named= "Fecha")
-            final LocalDate fecha,
+          /*  @ParameterLayout(named= "Fecha")
+            final LocalDate fecha,*/
            @ParameterLayout(named = "Importe")
             final Integer importe,
              @ParameterLayout(named = "Numerofactura")
                 final String numerofactura
 		    ) {
         setName(name);
-        setFecha(fecha);
+     //   setFecha(fecha);
         setImporte(importe);
         setNumerofactura(numerofactura);
         return this;
