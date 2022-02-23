@@ -36,12 +36,12 @@ import domainapp.modules.simple.reserva.Reserva;
 public class HomePageViewModel {
 
     public TranslatableString title() {
-        return TranslatableString.tr("{num} Reservas", "num", getObjects().size());
+        return TranslatableString.tr("{num} Listado de Reservas ", "num", getObjects().size());
     }
 
     @org.apache.isis.applib.annotation.HomePage
     public List<Reserva> getObjects() {
-        return repoReserva.listAll();
+        return repoReserva.Listar();
     }
 
 
