@@ -17,18 +17,20 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<mb3:menuBars xsi:schemaLocation="http://isis.apache.org/applib/layout/menubars/bootstrap3 http://isis.apache.org/applib/layout/menubars/bootstrap3/menubars.xsd http://isis.apache.org/applib/layout/component http://isis.apache.org/applib/layout/component/component.xsd http://isis.apache.org/applib/layout/links http://isis.apache.org/applib/layout/links/links.xsd" xmlns:cpt="http://isis.apache.org/applib/layout/component" xmlns:lnk="http://isis.apache.org/applib/layout/links" xmlns:mb3="http://isis.apache.org/applib/layout/menubars/bootstrap3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<mb3:menuBars xsi:schemaLocation="http://isis.apache.org/applib/layout/menubars/bootstrap3 http://isis.apache.org/applib/layout/menubars/bootstrap3/menubars.xsd http://isis.apache.org/applib/layout/component http://isis.apache.org/applib/layout/component/component.xsd"
+              xmlns:cpt="http://isis.apache.org/applib/layout/component"
+              xmlns:mb3="http://isis.apache.org/applib/layout/menubars/bootstrap3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <mb3:primary>
     <mb3:menu>
         <mb3:named>Reserva</mb3:named>
         <mb3:section>
-            <mb3:serviceAction objectType="simple.ReservaMenu" id="create">
+            <mb3:serviceAction objectType="simple.SimpleReservaMenu" id="create">
                 <cpt:named>Crear Reserva</cpt:named>
             </mb3:serviceAction>
-            <mb3:serviceAction objectType="simple.ReservaMenu" id="findByName">
+            <mb3:serviceAction objectType="simple.SimpleReservaMenu" id="findByName">
                 <cpt:named>Buscar por nombre</cpt:named>
             </mb3:serviceAction>
-            <mb3:serviceAction objectType="simple.ReservaMenu" id="listAll">
+            <mb3:serviceAction objectType="simple.SimpleReservaMenu" id="listAll">
                 <cpt:named>Ver Todas Reservas</cpt:named>
             </mb3:serviceAction>
         </mb3:section>
@@ -48,30 +50,30 @@
             </mb3:section>
         </mb3:menu>
     <mb3:menu>
-        <mb3:named>Tipo de Habitacion</mb3:named>
+        <mb3:named>Habitacion</mb3:named>
         <mb3:section>
-            <mb3:serviceAction objectType="simple.TipohabitacionMenu" id="create">
+            <mb3:serviceAction objectType="simple.SimpleHabitacionMenu" id="create">
                 <cpt:named>Crear</cpt:named>
             </mb3:serviceAction>
-            <mb3:serviceAction objectType="simple.TipohabitacionMenu" id="findByName">
+            <mb3:serviceAction objectType="simple.SimpleHabitacionMenu" id="findByNombre">
                 <cpt:named>Buscar por Nombre</cpt:named>
             </mb3:serviceAction>
-            <mb3:serviceAction objectType="simple.TipohabitacionMenu" id="listAll">
+            <mb3:serviceAction objectType="simple.SimpleHabitacionMenu" id="listAll">
                 <cpt:named>Listar todos</cpt:named>
             </mb3:serviceAction>
         </mb3:section>
     </mb3:menu>
     <mb3:menu>
-        <mb3:named>Habitacion</mb3:named>
+        <mb3:named>Tipo de Habitacion</mb3:named>
         <mb3:section>
-            <mb3:serviceAction objectType="simple.HabitacionMenu" id="create">
-                <cpt:named>Crear</cpt:named>
+            <mb3:serviceAction objectType="simple.SimpleTipodehabitacionMenu" id="create">
+                <cpt:named>Crear Tipo de Habitacion</cpt:named>
             </mb3:serviceAction>
-            <mb3:serviceAction objectType="simple.HabitacionMenu" id="findByName">
-                <cpt:named>Buscar por Nombre</cpt:named>
+            <mb3:serviceAction objectType="simple.SimpleTipodehabitacionMenu" id="findByDni">
+                <cpt:named>Buscar por nombre Tipo</cpt:named>
             </mb3:serviceAction>
-            <mb3:serviceAction objectType="simple.HabitacionMenu" id="listAll">
-                <cpt:named>Listar todos</cpt:named>
+            <mb3:serviceAction objectType="simple.SimpleTipodehabitacionMenu" id="listAll">
+                <cpt:named>Ver Todas Tipo de Habitacion</cpt:named>
             </mb3:serviceAction>
         </mb3:section>
     </mb3:menu>
@@ -84,6 +86,9 @@
         <mb3:serviceAction objectType="simple.CajaMenu" id="findByName">
             <cpt:named>Buscar por Nombre</cpt:named>
         </mb3:serviceAction>
+     <mb3:serviceAction objectType="simple.CajaMenu" id="ExportarListado">
+         <cpt:named>Exportar Listado a PDF</cpt:named>
+     </mb3:serviceAction>
         <mb3:serviceAction objectType="simple.CajaMenu" id="listAll">
             <cpt:named>Listar todos</cpt:named>
         </mb3:serviceAction>
@@ -95,6 +100,9 @@
             <mb3:serviceAction objectType="simple.GastosMenu" id="create">
                 <cpt:named>Crear</cpt:named>
             </mb3:serviceAction>
+            <mb3:serviceAction objectType="simple.GastosMenu" id="ExportarListado">
+                <cpt:named>Exportar Listado a PDF</cpt:named>
+            </mb3:serviceAction>
             <mb3:serviceAction objectType="simple.GastosMenu" id="findByName">
                 <cpt:named>Buscar por Nombre</cpt:named>
             </mb3:serviceAction>
@@ -104,7 +112,7 @@
         </mb3:section>
     </mb3:menu>
         <mb3:menu unreferencedActions="true">
-            <mb3:named>Other</mb3:named>
+            <mb3:named>Listados</mb3:named>
         </mb3:menu>
     </mb3:primary>
     <mb3:secondary>
